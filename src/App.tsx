@@ -36,7 +36,7 @@ function App() {
   useEffect(() => {
     const eventSource = new EventSource("http://localhost:5000/api/notifications");
 
-    eventSource.addEventListener("notification", (event) => {
+    eventSource.addEventListener("message", (event) => {
       try {
         const payload = JSON.parse(event.data);
         if (payload?.message) {
