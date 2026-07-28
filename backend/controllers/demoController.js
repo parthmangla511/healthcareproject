@@ -22,8 +22,12 @@ const bookDemo = async (req, res) => {
 
     await booking.save();
 
+    const notificationMessage = `Thank you ${name}! Your demo request has been received. We will contact you at ${email} soon.`;
+
     return res.status(201).json({
+      success: true,
       message: "Demo booked successfully",
+      notification: notificationMessage,
       booking,
     });
   } catch (error) {
