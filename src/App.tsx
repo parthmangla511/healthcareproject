@@ -1,25 +1,106 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useRef } from "react";
+import "./App.css";
+import "./css/style.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Navbar from "./components/navbar";
+import Home from "./components/home";
+import Service from "./components/service";
+import Client from "./components/client";
+import Contact from "./components/contact";
+import Review from "./components/review";
+import Location from "./components/location";
+import Locations from "./components/Location-1";
+import Login from "./components/login";
+import Signup from "./components/sign";
+import ScrollToSection from "./components/scroll";
+import DemoForm from "./components/form";
+import AdminBookings from "./pages/adminbookings";
+import DoctorAppointment from "./pages/doctorappointment";
+import ServiceDetail from "./pages/serviceDetail";
+import AppointmentPage from "./pages/appointment";
+
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 function App() {
+  const appRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(".hero-section", {
+        opacity:0,
+        y:80,
+        duration:1.4,
+        ease:"power3.out"
+      });
+      gsap.from(".service-section", {
+        scrollTrigger:{
+          trigger:".service-section",
+          start:"top 80%"
+        },
+        opacity:0,
+        y:100,
+        duration:1.2,
+        ease:"power3.out"
+      });
+      gsap.utils.toArray(".glass-card").forEach((card:any)=>{
+        gsap.from(card,{
+          scrollTrigger:{
+            trigger:card,
+            start:"top 85%"
+          },
+          opacity:0,
+          y:60,
+          scale:0.9,
+          duration:1,
+          ease:"power2.out"
+        });
+      });
+    },appRef);
+    return ()=>ctx.revert();
+  },[]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+<BrowserRouter>
+<ScrollToSection />
+<div ref={appRef}
+className="min-h-screen bg-gradient-to-br from-slate-950 via-sky-950 to-black text-white overflow-x-hidden"
+>
+<div className="fixed inset-0 -z-10">
+<div className="blob blob1"></div>
+<div className="blob blob2"></div>
+<div className="blob blob3"></div>
+</div>
+<Navbar />
+<Routes>
+<Route path="/login" element={<Login />} />
+<Route path="/sign" element={<Signup />}/>
+<Route path="/" element={
+<main>
+  <Home/>
+  <Service/>
+  <Client/>
+  <Contact/>
+  <Review/>
+  <Location/>
+  <Locations/>
+</main>
+}/>
+
+<Route path="/book-demo" element={<DemoForm />} />
+<Route path="/appointment" element={<AppointmentPage />} />
+<Route path="/doctor-appointment" element={<DoctorAppointment />} />
+<Route path="/services/:category" element={<ServiceDetail />} />
+<Route path="/admin-bookings" element={<AdminBookings />} />
+</Routes>
+<footer>
+<div className="center">
+Copyright © www.MediSync.com. All rights reserved!
+</div>
+</footer>
+</div>
+</BrowserRouter>
   );
 }
 

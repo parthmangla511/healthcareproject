@@ -1,0 +1,57 @@
+.demo-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+
+.demo-container form {
+    width: 400px;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.2);
+
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+
+.demo-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+.demo-container label {
+    display: block;
+    margin-top: 10px;
+}
+
+
+.demo-container input,
+.demo-container select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+
+.demo-container button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.demo-container button:hover {
+    background: #0056b3;
+}
