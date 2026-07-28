@@ -1,0 +1,105 @@
+.pharmacy-container {
+    width: min(1100px, 92%);
+    margin: 30px auto 60px;
+    color: #0f172a;
+}
+
+.pharmacy-hero {
+    background: linear-gradient(135deg, #0f766e, #2563eb);
+    color: white;
+    padding: 28px;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+    margin-bottom: 24px;
+}
+
+.pharmacy-hero h1 {
+    margin: 0 0 8px;
+    font-size: 2rem;
+}
+
+.pharmacy-hero p {
+    margin: 0;
+    font-size: 1rem;
+    opacity: 0.95;
+}
+
+.pharmacy-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.pharmacy-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.pharmacy-card h2 {
+    margin-top: 0;
+    color: #0f172a;
+}
+
+.pharmacy-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.pharmacy-meta p {
+    margin: 0;
+    color: #475569;
+}
+
+.medicine-list {
+    display: grid;
+    gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.medicine-card {
+    border: 1px solid #dbeafe;
+    border-radius: 12px;
+    padding: 16px;
+    background: #f8fafc;
+}
+
+.medicine-card h4 {
+    margin: 0 0 8px;
+    color: #1d4ed8;
+}
+
+.medicine-card p {
+    margin: 6px 0;
+    color: #334155;
+}
+
+.pharmacy-button {
+    margin-top: 10px;
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.pharmacy-button:hover {
+    background: linear-gradient(135deg, #15803d, #166534);
+}
+
+.status-message {
+    color: #0f766e;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.error-message {
+    color: #dc2626;
+    font-weight: 600;
+    margin-bottom: 12px;
+}

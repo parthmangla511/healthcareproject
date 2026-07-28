@@ -1,0 +1,55 @@
+.ambulance-page {
+  min-height: calc(100vh - 80px);
+  display: grid;
+  place-items: center;
+  padding: 48px 20px;
+}
+
+.ambulance-form {
+  width: min(100%, 480px);
+  padding: 32px;
+  border-radius: 16px;
+  background: #fff;
+  color: #172033;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.28);
+}
+
+.ambulance-form h1 { margin: 0 0 8px; }
+
+.ambulance-form__eyebrow {
+  margin: 0 0 8px;
+  color: #dc2626;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ambulance-form__intro { margin: 0 0 22px; color: #64748b; }
+
+.ambulance-form label,
+.ambulance-form input { display: block; width: 100%; box-sizing: border-box; }
+
+.ambulance-form label { margin: 14px 0 6px; font-weight: 600; }
+
+.ambulance-form input {
+  padding: 11px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  font: inherit;
+}
+
+.ambulance-form button {
+  width: 100%;
+  margin-top: 24px;
+  padding: 12px;
+  border: 0;
+  border-radius: 7px;
+  background: #dc2626;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.ambulance-form button:hover { background: #b91c1c; }
