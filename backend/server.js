@@ -11,11 +11,24 @@ const labTestRoute = require("./routes/labTestRoutes");
 const pharmacyRoute = require("./routes/pharmacyRoutes");
 const bookRoute = require("./routes/bookRoutes");
 const nearestRoute = require("./routes/nearestRoutes");
+const { addNotificationClient, removeNotificationClient } = require("./utils/notifications");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.get("/api/notifications", (req, res) => {
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders?.();
+
+  addNotificationClient(res);
+  res.write(`event: connected\ndata: ${JSON.stringify({ message: "Realtime notifications connected" })}\n\n`);
+
+  req.on("close", () => removeNotificationClient(res));
+});
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/healthcare")
