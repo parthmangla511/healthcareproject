@@ -18,9 +18,12 @@ exports.contactUs = async (req, res) => {
       message,
     });
 
+    const notificationMessage = `Hi ${name}, we received your message and will contact you soon at ${email}.`;
+
     res.status(201).json({
       success: true,
       message: "Message sent successfully",
+      notification: notificationMessage,
       contact,
     });
   } catch (error) {
