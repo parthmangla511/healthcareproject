@@ -1,4 +1,5 @@
 const DemoBooking = require("../models/demo");
+const { broadcastNotification } = require("../utils/notifications");
 
 const bookDemo = async (req, res) => {
   try {
@@ -23,6 +24,13 @@ const bookDemo = async (req, res) => {
     await booking.save();
 
     const notificationMessage = `Thank you ${name}! Your demo request has been received. We will contact you at ${email} soon.`;
+
+    broadcastNotification({
+      type: "demo",
+      title: "New demo booking",
+      message: notificationMessage,
+      createdAt: new Date().toISOString(),
+    });
 
     return res.status(201).json({
       success: true,
