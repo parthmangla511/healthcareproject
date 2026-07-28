@@ -2,16 +2,31 @@ const Book = require("../models/book");
 
 const createAppointment = async (req, res) => {
   try {
-    const { name, appointmentDate, appointmentTime } = req.body;
+    const { name, appointmentDate, appointmentType, slot } = req.body;
 
-    if (!name || !appointmentDate || !appointmentTime) {
-      return res.status(400).json({ message: "Please provide name, date, and time." });
+    if (!name || !appointmentDate || !appointmentType || !slot) {
+      return res.status(400).json({
+        message:
+          "Please provide your name, preferred date, appointment type, and slot.",
+      });
     }
 
-    const booking = new Book({ name, appointmentDate, appointmentTime });
+    const ticketNumber = `TKT-${Date.now().toString().slice(-6)}`;
+
+    const booking = new Book({
+      name,
+      appointmentDate,
+      appointmentType,
+      slot,
+      ticketNumber,
+    });
     await booking.save();
 
-    return res.status(201).json({ message: "Appointment booked successfully", booking });
+    return res.status(201).json({
+      message: `Your ${appointmentType.toLowerCase()} slot has been reserved successfully.`,
+      booking,
+      ticketNumber,
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
