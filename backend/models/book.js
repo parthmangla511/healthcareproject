@@ -11,9 +11,19 @@ const bookSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    appointmentTime: {
+    appointmentType: {
       type: String,
       required: true,
+      enum: ["Hospital Visit", "Video Consultation"],
+    },
+    slot: {
+      type: String,
+      required: true,
+    },
+    ticketNumber: {
+      type: String,
+      required: true,
+      unique: true,
     },
   },
   { timestamps: true }
