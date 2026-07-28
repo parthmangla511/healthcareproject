@@ -1,4 +1,5 @@
 const Contact = require("../models/contact");
+const { broadcastNotification } = require("../utils/notifications");
 
 exports.contactUs = async (req, res) => {
   try {
@@ -19,6 +20,13 @@ exports.contactUs = async (req, res) => {
     });
 
     const notificationMessage = `Hi ${name}, we received your message and will contact you soon at ${email}.`;
+
+    broadcastNotification({
+      type: "contact",
+      title: "New contact request",
+      message: notificationMessage,
+      createdAt: new Date().toISOString(),
+    });
 
     res.status(201).json({
       success: true,
