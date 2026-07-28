@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 import "./css/style.css";
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
@@ -31,6 +31,40 @@ gsap.registerPlugin(ScrollTrigger);
 
 function App() {
   const appRef = useRef<HTMLDivElement>(null);
+  const [liveNotification, setLiveNotification] = useState<{ title: string; message: string; createdAt: string } | null>(null);
+
+  useEffect(() => {
+    const eventSource = new EventSource("http://localhost:5000/api/notifications");
+
+    eventSource.addEventListener("notification", (event) => {
+      try {
+        const payload = JSON.parse(event.data);
+        if (payload?.message) {
+          setLiveNotification({
+            title: payload.title || "Realtime update",
+            message: payload.message,
+            createdAt: payload.createdAt || new Date().toISOString(),
+          });
+        }
+      } catch (error) {
+        console.error("Notification stream error:", error);
+      }
+    });
+
+    eventSource.onerror = () => {
+      eventSource.close();
+    };
+
+    return () => eventSource.close();
+  }, []);
+
+  useEffect(() => {
+    if (!liveNotification) return;
+
+    const timer = window.setTimeout(() => setLiveNotification(null), 5000);
+    return () => window.clearTimeout(timer);
+  }, [liveNotification]);
+
   useEffect(() => {
     const ctx = gsap.context(() => {
       gsap.from(".hero-section", {
@@ -77,6 +111,12 @@ className="min-h-screen bg-gradient-to-br from-slate-950 via-sky-950 to-black te
 <div className="blob blob3"></div>
 </div>
 <Navbar />
+{liveNotification && (
+  <div className="fixed top-4 right-4 z-50 max-w-sm rounded-xl border border-sky-400/40 bg-slate-900/95 px-4 py-3 shadow-2xl backdrop-blur">
+    <p className="text-sm font-semibold text-sky-300">{liveNotification.title}</p>
+    <p className="mt-1 text-sm text-slate-100">{liveNotification.message}</p>
+  </div>
+)}
 <Routes>
 <Route path="/" element={
 <main>
