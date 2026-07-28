@@ -33,46 +33,48 @@ function DemoForm() {
   }, []);
 
   const handleChange = (
-  e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-  const name = e.target.name;
-  const value = e.target.value;
-  setFormData({
-    ...formData,
-    [name]: value
-  });
-
-};
-const handleCheckbox = (
-  e: React.ChangeEvent<HTMLInputElement>) => {
-  setFormData({
-    ...formData,
-    agree: e.target.checked
-  });
-};
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  setLoading(true);
-  setStatus("");
-
-  try {
-    const response = await axios.post("http://localhost:5000/api/book-demo", formData);
-    setStatus(response.data.message || "Appointment booked successfully!");
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const name = e.target.name;
+    const value = e.target.value;
     setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      hospital: "",
-      service: "",
-      city: "",
-      state: "",
-      agree: false
+      ...formData,
+      [name]: value
     });
-  } catch (error: any) {
-    setStatus(error.response?.data?.message || "Something went wrong. Please try again.");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
+
+  const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({
+      ...formData,
+      agree: e.target.checked
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setStatus("");
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/book-demo", formData);
+      setStatus(response.data.message || "Appointment booked successfully!");
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        hospital: "",
+        service: "",
+        city: "",
+        state: "",
+        agree: false
+      });
+    } catch (error: any) {
+      setStatus(error.response?.data?.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="demo-container">
       <form onSubmit={handleSubmit}>
@@ -93,7 +95,8 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
           placeholder="Enter your email"
           value={formData.email}
           onChange={handleChange}
-          required/>
+          required
+        />
         <label>Phone Number:</label>
         <input
           type="text"
@@ -101,7 +104,8 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
           placeholder="Enter phone number"
           value={formData.phone}
           onChange={handleChange}
-          required/>
+          required
+        />
         <label>Hospital Name:</label>
         <input
           type="text"
@@ -109,16 +113,16 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
           placeholder="Enter hospital name"
           value={formData.hospital}
           onChange={handleChange}
-          required/>
+          required
+        />
         <label>Select Service:</label>
         <select
           name="service"
           value={formData.service}
           onChange={handleChange}
-          required>
-          <option value="">
-            Select Service
-          </option>
+          required
+        >
+          <option value="">Select Service</option>
           {serviceOptions.map((service) => (
             <option key={service._id || service.title} value={service.title}>
               {service.title} ({service.category})
@@ -130,51 +134,34 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
           name="city"
           value={formData.city}
           onChange={handleChange}
-          required>
-          <option value="">
-            Select City
-          </option>
-          <option value="Delhi">
-            New Delhi
-          </option>
-          <option value="Mumbai">
-            Mumbai
-          </option>
-          <option value="Indore">
-            Indore
-          </option>
-          <option value="Udaipur">
-            Udaipur
-          </option>
+          required
+        >
+          <option value="">Select City</option>
+          <option value="Delhi">New Delhi</option>
+          <option value="Mumbai">Mumbai</option>
+          <option value="Indore">Indore</option>
+          <option value="Udaipur">Udaipur</option>
         </select>
         <label>Select State:</label>
         <select
           name="state"
           value={formData.state}
           onChange={handleChange}
-          required>
-          <option value="">
-            Select State
-          </option>
-          <option value="Delhi">
-            Delhi
-          </option>
-          <option value="Maharashtra">
-            Maharashtra
-          </option>
-          <option value="Madhya Pradesh">
-            Madhya Pradesh
-          </option>
-          <option value="Rajasthan">
-            Rajasthan
-          </option>
+          required
+        >
+          <option value="">Select State</option>
+          <option value="Delhi">Delhi</option>
+          <option value="Maharashtra">Maharashtra</option>
+          <option value="Madhya Pradesh">Madhya Pradesh</option>
+          <option value="Rajasthan">Rajasthan</option>
         </select>
         <label>
           <input
             type="checkbox"
             checked={formData.agree}
             onChange={handleCheckbox}
-            required/>
+            required
+          />
           I agree to be contacted regarding this appointment.
         </label>
         <button type="submit" disabled={loading}>

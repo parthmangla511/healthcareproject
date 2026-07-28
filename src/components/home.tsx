@@ -35,7 +35,7 @@ function Home() {
                 to="/book-demo"
                 className="btn"
             >
-                Book Appointment
+                Book a Demo
             </Link>
 
         </section>

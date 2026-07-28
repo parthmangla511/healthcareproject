@@ -8,6 +8,7 @@ function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
@@ -19,13 +20,8 @@ function Login() {
                 }
             );
             alert(response.data.message);
-            // Store logged-in user
-            sessionStorage.setItem(
-                "user",
-                JSON.stringify(response.data.user)
-            );
+            sessionStorage.setItem("user", JSON.stringify(response.data.user));
 
-            // Redirect based on role
             if (response.data.user?.role === "admin") {
                 navigate("/admin-bookings");
                 return;
@@ -34,7 +30,7 @@ function Login() {
             navigate("/");
         } 
         catch (error: any) {
-            alert(error.response.data.message);
+            alert(error.response?.data?.message || "Login failed");
         }
     };
     return (

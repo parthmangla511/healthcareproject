@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import "./App.css";
 import "./css/style.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/navbar";
 import Home from "./components/home";
@@ -15,10 +15,16 @@ import Login from "./components/login";
 import Signup from "./components/sign";
 import ScrollToSection from "./components/scroll";
 import DemoForm from "./components/form";
-import AdminBookings from "./pages/adminbookings";
-import DoctorAppointment from "./pages/doctorappointment";
+import BookAppointment from "./pages/bookappointment";
+import Ambulance from "./pages/ambulance";
+import Airplane from "./pages/airplane";
+import LabTesting from "./pages/labtesting";
+import NearestService from "./pages/nearestservice";
+import Vaccination from "./pages/vaccination";
+import Pharmacy from "./pages/pharmacy";
 import ServiceDetail from "./pages/serviceDetail";
-import AppointmentPage from "./pages/appointment";
+import DoctorAppointment from "./pages/doctorappointment";
+
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -89,10 +95,16 @@ className="min-h-screen bg-gradient-to-br from-slate-950 via-sky-950 to-black te
 }/>
 
 <Route path="/book-demo" element={<DemoForm />} />
-<Route path="/appointment" element={<AppointmentPage />} />
 <Route path="/doctor-appointment" element={<DoctorAppointment />} />
 <Route path="/services/:category" element={<ServiceDetail />} />
-<Route path="/admin-bookings" element={<AdminBookings />} />
+<Route path="/book-appointment" element={<BookAppointment />} />
+<Route path="/ambulance" element={<Ambulance />}/>
+<Route path="/airplane" element={<Airplane />}/>
+<Route path="/labtesting" element={<LabTesting />}/>
+<Route path="/nearest-service" element={<NearestService />}/>
+<Route path="/vaccination" element={<Vaccination />} />
+<Route path="/pharmacy" element={<Pharmacy />} />
+
 </Routes>
 <footer>
 <div className="center">
