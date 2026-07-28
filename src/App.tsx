@@ -11,8 +11,6 @@ import Contact from "./components/contact";
 import Review from "./components/review";
 import Location from "./components/location";
 import Locations from "./components/Location-1";
-import Login from "./components/login";
-import Signup from "./components/sign";
 import ScrollToSection from "./components/scroll";
 import DemoForm from "./components/form";
 
@@ -80,8 +78,6 @@ className="min-h-screen bg-gradient-to-br from-slate-950 via-sky-950 to-black te
 </div>
 <Navbar />
 <Routes>
-<Route path="/login" element={<Login />} />
-<Route path="/sign" element={<Signup />}/>
 <Route path="/" element={
 <main>
   <Home/>
