@@ -1,6 +1,8 @@
 import "../App.css";
 import "../css/form.css";
 import { useState } from "react";
+import axios from "axios";
+
 function DemoForm() {
   const [formData, setFormData] = useState({
     name: "",
@@ -10,34 +12,49 @@ function DemoForm() {
     service: "",
     city: "",
     state: "",
-    agree: false
+    agree: false,
   });
-  const handleChange = (
-  e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-  const name = e.target.name;
-  const value = e.target.value;
-  setFormData({
-    ...formData,
-    [name]: value
-  });
+  const [statusMessage, setStatusMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-};
-const handleCheckbox = (
-  e: React.ChangeEvent<HTMLInputElement>) => {
-  setFormData({
-    ...formData,
-    agree: e.target.checked
-  });
-};
-const handleSubmit = (
-  e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  console.log(formData);
-};
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleCheckbox = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData((prev) => ({ ...prev, agree: e.target.checked }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setStatusMessage("");
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/demo", formData);
+      setStatusMessage(response.data?.notification || response.data?.message || "Demo booked successfully");
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        hospital: "",
+        service: "",
+        city: "",
+        state: "",
+        agree: false,
+      });
+    } catch (error: any) {
+      setStatusMessage(error.response?.data?.message || "Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="demo-container">
       <form onSubmit={handleSubmit}>
-        <h2>Book a Demo</h2>
+        <h2>Book an Appointment</h2>
         <label>Name:</label>
         <input
           type="text"
@@ -151,9 +168,10 @@ const handleSubmit = (
             required/>
           I agree to be contacted regarding this demo.
         </label>
-        <button type="submit">
-          Book Demo
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Submitting..." : "Book Demo"}
         </button>
+        {statusMessage && <p style={{ marginTop: "12px", color: "black" }}>{statusMessage}</p>}
       </form>
     </div>
   );
