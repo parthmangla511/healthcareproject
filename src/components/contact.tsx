@@ -9,6 +9,11 @@ function Contact() {
     phone_number: "",
     message: "",
   });
+  const [status, setStatus] = useState<{
+    type: "success" | "error";
+    message: string;
+  } | null>(null);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -31,7 +36,10 @@ function Contact() {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Message sent successfully!");
+        setStatus({
+          type: "success",
+          message: data.notification || data.message || "Message sent successfully!",
+        });
 
         setFormData({
           name: "",
@@ -40,11 +48,17 @@ function Contact() {
           message: "",
         });
       } else {
-        alert(data.message);
+        setStatus({
+          type: "error",
+          message: data.message || "Unable to send message.",
+        });
       }
     } catch (error) {
       console.error(error);
-      alert("Server Error");
+      setStatus({
+        type: "error",
+        message: "Server error. Please try again later.",
+      });
     }
   };
 
@@ -75,6 +89,11 @@ function Contact() {
           <div className="form-group">
             <input type="submit"></input>
           </div>
+          {status && (
+            <div className={`status-message ${status.type}`}>
+              {status.message}
+            </div>
+          )}
         </form>
       </div>
     </section>
