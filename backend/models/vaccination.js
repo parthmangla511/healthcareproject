@@ -10,6 +10,10 @@ const vaccinationSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    appointmentDate: {
+      type: Date,
+      required: true,
+    },
     address: {
       type: String,
       required: true,
@@ -21,6 +25,18 @@ const vaccinationSchema = new mongoose.Schema(
     contact_number: {
       type: String,
       required: true,
+    },
+    appointmentType: {
+      type: String,
+      enum: ["Center Visit", "Home Visit"],
+      default: "Center Visit",
+    },
+    slot: {
+      type: String,
+    },
+    ticketNumber: {
+      type: String,
+      unique: true,
     },
   }
 );
