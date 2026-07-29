@@ -2,26 +2,33 @@ const Vaccination = require("../models/vaccination");
 
 const vaccination = async (req, res) => {
   try {
-    const { name, age, address, email, contact_number } = req.body;
-    if (!name || !age || !address || !email || !contact_number) {
+    const { name, age, appointmentDate, appointmentType, slot, address, email, contact_number } = req.body;
+    if (!name || !age || !appointmentDate || !appointmentType || !slot || !address || !email || !contact_number) {
       return res.status(400).json({
-        message: "Please provide all required vaccination booking details.",
+        message: "Please provide all required vaccination booking details and choose a slot.",
       });
     }
+
+    const ticketNumber = `TKT-${Date.now().toString().slice(-6)}`;
 
     const booking = new Vaccination({
       name,
       age,
+      appointmentDate,
+      appointmentType,
+      slot,
       address,
       email,
       contact_number,
+      ticketNumber,
     });
 
     await booking.save();
 
     return res.status(201).json({
-      message: "Vaccination booked successfully",
+      message: "Vaccination slot reserved successfully",
       booking,
+      ticketNumber,
     });
   } catch (error) {
     return res.status(500).json({
