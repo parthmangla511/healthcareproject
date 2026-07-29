@@ -36,4 +36,17 @@ mongoose
   .catch((err) => console.error("MongoDB connection error:", err));
 
 app.use("/api", userRoutes);
-app
+app.use("/api", contactRoute);
+app.use("/api", demoRoute);
+app.use("/api", ambulanceRoute);
+app.use("/api", airplaneRoute);
+app.use("/api", vaccinationRoute);
+app.use("/api", labTestRoute);
+app.use("/api", pharmacyRoute);
+app.use("/api", bookRoute);
+app.use("/api", nearestRoute);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
