@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "../css/ambulance.css";
+import { bookAmbulance } from "../services/ambulanceService";
 
 type AmbulanceFormData = {
   name: string;
@@ -29,39 +30,30 @@ function Ambulance() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const response = await fetch("http://localhost:5000/api/ambulance", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          age: Number(formData.age),
-        }),
-      });
+  try {
+    const result = await bookAmbulance({
+      ...formData,
+      age: Number(formData.age),
+    });
 
-      const data = await response.json();
+    setStatusMessage(result.message);
 
-      if (response.ok) {
-        setFormData({
-          name: "",
-          age: "",
-          pickup_location: "",
-          drop_location: "",
-          contact_number: "",
-          email: "",
-        });
-      } else {
-        setStatusMessage(data.message || "Unable to book ambulance right now.");
-      }
-    } catch (error) {
-      console.error(error);
-      setStatusMessage("Server error. Please try again later.");
-    }
-  };
+    setFormData({
+      name: "",
+      age: "",
+      pickup_location: "",
+      drop_location: "",
+      contact_number: "",
+      email: "",
+    });
+
+  } catch (error) {
+    console.error(error);
+    setStatusMessage("Server error. Please try again later.");
+  }
+};
 
   return (
     <main className="ambulance-page">
@@ -140,6 +132,9 @@ function Ambulance() {
         />
 
         <button type="submit">Request Ambulance</button>
+        {statusMessage && (
+  <p className="status-message">{statusMessage}</p>
+)}
       </form>
     </main>
   );
