@@ -26,7 +26,20 @@ const airplaneSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-  }
+    serviceType: {
+      type: String,
+      enum: ["Flight Service", "Medical Escort"],
+      default: "Flight Service",
+    },
+    slot: {
+      type: String,
+    },
+    ticketNumber: {
+      type: String,
+      unique: true,
+    },
+  },
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Airplane", airplaneSchema);
