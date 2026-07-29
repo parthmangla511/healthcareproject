@@ -2,13 +2,15 @@ const Airplane = require("../models/airplane");
 
 const airplane = async (req, res) => {
   try {
-    const { name, depature_city, destination_city, travel_date, contact_number, email } = req.body;
+    const { name, depature_city, destination_city, travel_date, contact_number, email, serviceType, slot } = req.body;
 
-    if (!name || !depature_city || !destination_city || !travel_date || !contact_number || !email) {
+    if (!name || !depature_city || !destination_city || !travel_date || !contact_number || !email || !serviceType || !slot) {
       return res.status(400).json({
-        message: "Please provide all required airplane booking details.",
+        message: "Please provide all required airplane booking details and choose a slot.",
       });
     }
+
+    const ticketNumber = `TKT-${Date.now().toString().slice(-6)}`;
 
     const booking = new Airplane({
       name,
@@ -17,13 +19,17 @@ const airplane = async (req, res) => {
       travel_date,
       contact_number,
       email,
+      serviceType,
+      slot,
+      ticketNumber,
     });
 
     await booking.save();
 
     return res.status(201).json({
-      message: "Airplane booked successfully",
+      message: "Flight service request received",
       booking,
+      ticketNumber,
     });
   } catch (error) {
     return res.status(500).json({
