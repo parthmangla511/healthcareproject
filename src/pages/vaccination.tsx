@@ -1,26 +1,50 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import "../css/vaccination.css";
 
 type VaccinationFormData = {
   name: string;
   age: string;
+  appointmentDate: string;
+  appointmentType: string;
+  slot: string;
   address: string;
   email: string;
   phoneNumber: string;
 };
 
 function Vaccination(){
+    const dateOptions = useMemo(() => {
+        const options: { value: string; label: string }[] = [];
+        const now = new Date();
+        for (let i = 0; i < 7; i += 1) {
+            const date = new Date(now);
+            date.setDate(now.getDate() + i);
+            const value = date.toISOString().slice(0, 10);
+            const label = date.toLocaleDateString("en-IN", {
+                weekday: "short",
+                day: "numeric",
+                month: "short",
+            });
+            options.push({ value, label });
+        }
+        return options;
+    }, []);
+
     const [formData, setFormData] = useState<VaccinationFormData>({
         name: "",
         age: "",
+        appointmentDate: dateOptions[0]?.value || "",
+        appointmentType: "Center Visit",
+        slot: "",
         address: "",
         email: "",
         phoneNumber: "",
       });
       const [statusMessage, setStatusMessage] = useState("");
+      const [ticket, setTicket] = useState<string | null>(null);
     
       const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement>
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
       ) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -36,8 +60,13 @@ function Vaccination(){
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              ...formData,
+              name: formData.name,
               age: Number(formData.age),
+              appointmentDate: formData.appointmentDate,
+              appointmentType: formData.appointmentType,
+              slot: formData.slot,
+              address: formData.address,
+              email: formData.email,
               contact_number: formData.phoneNumber,
             }),
           });
@@ -48,13 +77,17 @@ function Vaccination(){
             setFormData({
               name: "",
               age: "",
+              appointmentDate: dateOptions[0]?.value || "",
+              appointmentType: "Center Visit",
+              slot: "",
               address: "",
               email: "",
               phoneNumber: "",
             });
-            setStatusMessage(data.message || "Vaccination request submitted successfully.");
+            setStatusMessage(data.message || "Vaccination slot reserved successfully.");
+            setTicket(data.ticketNumber || null);
           } else {
-            setStatusMessage(data.message || "Unable to book vaccination right now.");
+            setStatusMessage(data.message || "Unable to reserve vaccination slot right now.");
           }
         } catch (error) {
           console.error(error);
@@ -65,8 +98,8 @@ function Vaccination(){
         <main className="vaccination-page">
             <form className="vaccination-form" onSubmit={handleSubmit}>
                 <p className="vaccination-form__eyebrow">Vaccination Service</p>
-                <h1>Book a Vaccination</h1>
-                <p className="vaccination-form__intro">Share the patient details to request a vaccination appointment.</p>
+                <h1>Book a Vaccination Slot</h1>
+                <p className="vaccination-form__intro">Share the patient details and choose a slot to reserve your vaccination.</p>
                 <label htmlFor="patient-name">Patient Name:</label>
                 <input id="patient-name" 
                 type="text" name="name" 
@@ -83,6 +116,26 @@ function Vaccination(){
           onChange={handleChange}
           required
         />
+                <label htmlFor="appointment-date">Preferred date</label>
+                <select id="appointment-date" name="appointmentDate" value={formData.appointmentDate} onChange={handleChange} required>
+                    {dateOptions.map((option) => (
+                        <option key={option.value} value={option.value}>{option.label}</option>
+                    ))}
+                </select>
+                <label htmlFor="appointment-type">Choose type</label>
+                <select id="appointment-type" name="appointmentType" value={formData.appointmentType} onChange={handleChange} required>
+                    <option value="Center Visit">Center Visit</option>
+                    <option value="Home Visit">Home Visit</option>
+                </select>
+                <label htmlFor="appointment-slot">Choose available slot</label>
+                <select id="appointment-slot" name="slot" value={formData.slot} onChange={handleChange} required>
+                    <option value="">Select a slot</option>
+                    <option value="09:00 AM - 09:30 AM">09:00 AM - 09:30 AM</option>
+                    <option value="09:30 AM - 10:00 AM">09:30 AM - 10:00 AM</option>
+                    <option value="10:00 AM - 10:30 AM">10:00 AM - 10:30 AM</option>
+                    <option value="10:30 AM - 11:00 AM">10:30 AM - 11:00 AM</option>
+                    <option value="11:00 AM - 11:30 AM">11:00 AM - 11:30 AM</option>
+                </select>
                 <label htmlFor="patient-address">Address:</label>
                 <input
           id="address"
@@ -114,7 +167,13 @@ function Vaccination(){
           required
         />
         {statusMessage ? <p className="vaccination-form__status">{statusMessage}</p> : null}
-        <button type="submit">Request Vaccination</button>
+        <button type="submit">Reserve Vaccination Slot</button>
+        {ticket && (
+            <section className="appointment-summary" aria-live="polite">
+                <h2>Ticket details</h2>
+                <p><strong>Ticket:</strong> {ticket}</p>
+            </section>
+        )}
             </form>
         </main>
     );
