@@ -1,8 +1,15 @@
 const express = require("express");
 const router = express.Router();
 
-const { ambulance } = require("../controllers/ambulanceController");
+router.post("/", async (req, res) => {
 
-router.post("/ambulance", ambulance);
+    console.log("New Ambulance Request");
+
+    res.json({
+        success: true,
+        message: "Ambulance request submitted successfully."
+    });
+
+});
 
 module.exports = router;
